@@ -5,7 +5,7 @@ Zenodo DOI: [![DOI](https://zenodo.org/badge/417468733.svg)](https://doi.org/xxx
 
 # Multiomics image analysis
 
-This repository hosted the scripts described and used in the [Open Source Multi-Omics Analysis Workflow for Comet Images protocol](https://go.epfl.ch/multiomics-image-analysis)
+This repository hosted the scripts described and used in the [Open Source MultiOmics Analysis Workflow for Comet Images protocol](https://go.epfl.ch/multiomics-image-analysis)
 
 
 Please follow the instructions given in this protocol, and in the scripts header, before using them.
@@ -33,6 +33,6 @@ As this code is neither novel nor entirely original, there is no linked publicat
 
 ### If you use those scripts, you should cite the following protocol:
 
-Dornier, R., Schlaeppi, A., Sordet-Dessimoz, J., Seitz, A., **Open Source Multi-Omics Analysis Workflow for Comet Images**. 
+Dornier, R., Schlaeppi, A., Sordet-Dessimoz, J., Seitz, A., **Open Source MultiOmics Analysis Workflow for Comet Images**. 
 protocols.io, 2026.06, https://go.epfl.ch/multiomics-image-analysis
 
