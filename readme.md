@@ -5,10 +5,10 @@ Zenodo DOI: [![DOI](https://zenodo.org/badge/417468733.svg)](https://doi.org/xxx
 
 # Multiomics image analysis
 
-This repository hosted the scripts described and used in the [multiomics image analysis protocol]()
+This repository hosted the scripts described and used in the [Open Source Multi-Omics Analysis Workflow for Comet Images protocol](https://go.epfl.ch/multiomics-image-analysis)
 
 
-Please follow the instructions given in the protocol, and in the scripts header, before using them.
+Please follow the instructions given in this protocol, and in the scripts header, before using them.
 
 
 # Citing
@@ -24,7 +24,7 @@ As this code is neither novel nor entirely original, there is no linked publicat
 ## Code authorship
 **Author**: Rémy Dornier (1)
 
-**Contributors**: Anjalie Schlaeppi(1), Nicolas Chiaruttini (1), Romain Guiet (1)
+**Contributors**: Anjalie Schlaeppi (1), Nicolas Chiaruttini (1), Romain Guiet (1)
 
 
 **Affiliations**
@@ -33,6 +33,6 @@ As this code is neither novel nor entirely original, there is no linked publicat
 
 ### If you use those scripts, you should cite the following protocol:
 
-Dornier, R., Schlaeppi, A.,**Multiomics image analysis**. 
-protocols.io 2026.xx.xx. https://doi.org/xxx
+Dornier, R., Schlaeppi, A., Sordet-Dessimoz, J., Seitz, A., **Open Source Multi-Omics Analysis Workflow for Comet Images**. 
+protocols.io, 2026.06, https://go.epfl.ch/multiomics-image-analysis
 

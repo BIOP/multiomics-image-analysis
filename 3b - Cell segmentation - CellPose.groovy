@@ -7,7 +7,7 @@
  * 4. Reimport the mask images into QuPath and create the desired objects with the selected statistics
  *
  * Please check the documentation and step-by-step tutorial on protocols.io
- * 
+ * https://go.epfl.ch/multiomics-image-analysis
  * 
  * 
  * NOTE: that this template does not contain all options, but should help get you started
@@ -51,12 +51,13 @@
 
 def CHANNELS_TO_DETECT = [
     "DAPI",
-    "FITC",    
+    "CD3", 
+    "FoxP3"
 ]
 
 // Specify the model name (cyto, nuclei, cyto2, ... or a path to your custom model as a string)
 // Other models for Cellpose https://cellpose.readthedocs.io/en/latest/models.html
-def MODEL_PATH = "cyto3"
+def MODEL_PATH = "cpsam"
 
 def TISSUE_CLASS = "tissue"
 
@@ -77,6 +78,9 @@ CHANNELS_TO_DETECT.each {
    realChannels.addAll(originalChannelNames.stream().filter(e->e.toLowerCase().contains(it.toLowerCase())).findAll())
 }
 
+// remove duplicate channels
+realChannels = realChannels.unique()
+
 // check if selected channels are found
 if(realChannels.isEmpty()) {
    Logger.warn("The channels you give cannot be retrieved in the list of available channels. Please check the channel names") 
@@ -84,7 +88,7 @@ if(realChannels.isEmpty()) {
    return
 }else {
    Logger.info("The following channels will be used for detection:")
-   Logger.info("Channels: "+ CHANNELS_TO_DETECT) 
+   Logger.info("Channels: "+ realChannels) 
 }
 
 // get tissue annotations
@@ -103,6 +107,7 @@ if (tissueAnnotations.isEmpty()) {
 }
 
 Date start = new Date()
+println "Starting CellPose..."
 
 def cellpose = Cellpose2D.builder( MODEL_PATH )
         .pixelSize( 0.5 )                      // Resolution for detection in um
@@ -113,14 +118,14 @@ def cellpose = Cellpose2D.builder( MODEL_PATH )
 //        .tileSize( 1024 )                  // If your GPU can take it, make larger tiles to process fewer of them. Useful for Omnipose
 //        .cellposeChannels( 1,2 )           // Overwrites the logic of this plugin with these two values. These will be sent directly to --chan and --chan2
 //        .cellprobThreshold( 0.0 )          // Threshold for the mask detection, defaults to 0.0
-//        .flowThreshold( 0.4 )              // Threshold for the flows, defaults to 0.4
+        .flowThreshold( 1 )              // Threshold for the flows, defaults to 0.4
 //        .diameter( 15 )                    // Median object diameter. Set to 0.0 for the `bact_omni` model or for automatic computation
 //        .useOmnipose()                     // Use omnipose instead
-//        .useCellposeSAM()                  // Use cellposeSAM (i.e. cellpose 4.x.x) env instead of previous versions of cellpose <= v3.x.x
+        .useCellposeSAM()                  // Use cellposeSAM (i.e. cellpose 4.x.x) env instead of previous versions of cellpose <= v3.x.x
 //        .addParameter( "cluster" )         // Any parameter from cellpose or omnipose not available in the builder.
 //        .addParameter( "save_flows" )      // Any parameter from cellpose or omnipose not available in the builder.
 //        .addParameter( "anisotropy", "3" ) // Any parameter from cellpose or omnipose not available in the builder.
-//        .cellExpansion( 5.0 )              // Approximate cells based upon nucleus expansion
+        .cellExpansion( 3 )              // Approximate cells based upon nucleus expansion
 //        .cellConstrainScale( 1.5 )         // Constrain cell expansion using nucleus size
 //        .classify( "My Detections" )       // PathClass to give newly created objects
         .measureShape()                    // Add shape measurements

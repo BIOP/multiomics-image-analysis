@@ -10,6 +10,9 @@
  *     - Resolve hierarchy should be done prior to run the script. If you are using spotiflow extension,
  *      cellpose, stardist, or instanseg extension, hierarchy is already resolved.
  * 
+ * Please check the documentation and step-by-step tutorial on protocols.io
+ * https://go.epfl.ch/multiomics-image-analysis
+ * 
  * 
  * author: Rémy Dornier - PTBIOP & Claude.ai
  * date: 2025-05.29

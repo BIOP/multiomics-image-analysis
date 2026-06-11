@@ -10,8 +10,7 @@
  * See all options by calling spotiflow.helpPredict()
  *
  * Please check the documentation and step-by-step tutorial on protocols.io
- * 
- * 
+ * https://go.epfl.ch/multiomics-image-analysis
  * 
  * 
  * author: Rémy Dornier - PTBIOP
@@ -54,8 +53,9 @@
 def PRETRAINED_MODEL = "general"
 
 def CHANNELS_TO_DETECT = [
-    "prot1",
-    "prot2",    
+    "T5",
+    "T6",
+    "T7",
 ]
 
 def TISSUE_CLASS = "tissue"
@@ -69,12 +69,16 @@ def TISSUE_CLASS = "tissue"
 // get the available channels
 def originalServer = getCurrentServer()
 def originalChannelNames = originalServer.getMetadata().getChannels().collect(e->e.getName())
+def imageData = getCurrentImageData()
 
 // get the raw name of the selected channels
 def realChannels = []
 CHANNELS_TO_DETECT.each {
    realChannels.addAll(originalChannelNames.stream().filter(e->e.toLowerCase().contains(it.toLowerCase())).findAll())
 }
+
+// remove duplicate channels
+realChannels = realChannels.unique()
 
 // check if selected channels are found
 if(realChannels.isEmpty()) {
@@ -83,7 +87,7 @@ if(realChannels.isEmpty()) {
    return
 }else {
    Logger.info("The following channels will be used for detection:")
-   Logger.info("Channels: "+ CHANNELS_TO_DETECT) 
+   Logger.info("Channels: "+ realChannels) 
 }
 
 
@@ -104,13 +108,14 @@ if (tissueAnnotations.isEmpty()) {
    
 
 Date start = new Date()
+println "Starting Spotiflow..."
 
 def spotiflow = Spotiflow.builder()
 //        .tempDirectory(new File("path/to/tmp/folder"))       // OPTIONAL : default is in 'qpProject/spotiflow-temp' folder
 //        .setModelDir(new File("path/to/my/model"))           // OPTIONAL : path to your own trained model
         .setPretrainedModelName(PRETRAINED_MODEL)                 // OPTIONAL : Default is 'general'
 //        .setMinDistance(2)                                   // OPTIONAL : Positive integer value
-        .setProbabilityThreshold(0.4)                        // OPTIONAL : Positive value
+        .setProbabilityThreshold(0.6)                        // OPTIONAL : Positive value
 //        .disableGPU()                                        // OPTIONAL : Force using CPU ; default is automatic (let spotiflow decide)
 //        .process3d()                                         // OPTIONAL : process the entire zstack
 //        .zPositions(0,5)                                     // OPTIONAL : ONLY works wih process3d(). Select a sub-stack (start and end inclusive)
@@ -122,7 +127,7 @@ def spotiflow = Spotiflow.builder()
         .saveTempImagesAsOmeZarr()                           // OPTIONAL : ONLY AVAILABLE FOR SPOTIFLOW >= 0.5.8. Save temp images as ome-zarr instead of ome.tiff
 //        .clearAllChildObjects()                              // OPTIONAL : Clear all previous detections, whatever their class
 //        .createAnnotations()                                 // OPTIONAL : Create annotations instead of detections. WARNING: this can slow up a lot QuPath. Only to use to pre-annotated small patches for later training.
-        .clearChildObjectsBelongingToCurrentChannels()       // OPTIONAL : Clear all previous detections which belong to the current selected channels (i.e. with their class set with the name of the channel)
+     //   .clearChildObjectsBelongingToCurrentChannels()       // OPTIONAL : Clear all previous detections which belong to the current selected channels (i.e. with their class set with the name of the channel)
         .channels(realChannels as String[])        // REQUIRED : list of channel name(s) to process. At least one channel is required
         .cleanTempDir()                                      // OPTIONAL : Clean all files from the tempDirectory
 //        .addParameter("key","value")                         // OPTIONAL : Add more parameter, base on the available ones

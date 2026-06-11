@@ -1,6 +1,9 @@
 /**
  * This script applies a pixel classifier to detect the tissue
+ * Pre-requisit: You need to train your own pixel classifier
+ * 
  * Please check the documentation and step-by-step tutorial on protocols.io
+ * https://go.epfl.ch/multiomics-image-analysis
  * 
  * 
  * author: Rémy Dornier - PTBIOP
@@ -47,7 +50,7 @@
  * BEGINNING OF THE SCRIPT
  ***********************/
  
- 
+println "Starting pixel classification..."
 createAnnotationsFromPixelClassifier(CLASSIFIER_NAME, MIN_OBJECT_SIZE, MIN_HOLE_SIZE, "SPLIT")
 println "End of the script"
 return

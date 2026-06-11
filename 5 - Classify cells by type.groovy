@@ -13,7 +13,10 @@
  * - grouped antibodies : the cells are classified according to their type. If the cell is positive for the
  *   full combinaison of defined antibodies, then it is classified with their respective class.
  * 
- *  
+ * Please check the documentation and step-by-step tutorial on protocols.io
+ * https://go.epfl.ch/multiomics-image-analysis
+ * 
+ * 
  * author: Rémy Dornier - PTBIOP
  * date: 2025-10-01
  * version: 1.0.0
@@ -122,88 +125,76 @@ if(selectedObjects.isEmpty()) {
     tissueAnnotations = selectedObjects.findAll{ it.isAnnotation()}
 }
 
-// create new pathClasses if they doesn't exist
-def availablePathClasses = QPEx.getQuPath().getAvailablePathClasses();
-def newPathClasses = []
-newPathClasses.addAll(correspondanceMap.values())
-newPathClasses.add(undefinedClass)
-newPathClasses.add(unclassifiedClass)
+tissueAnnotations.each{obj->
 
-for(def cellClass : newPathClasses){
-    def cellPathClass = PathClass.fromString(cellClass);
-    if (!availablePathClasses.contains(cellPathClass)) {
-        availablePathClasses.add(cellPathClass);
+    // get cells
+    def detectionType = "Cell"
+    def cells  = obj.getChildObjects().findAll { it.isCell() }
+    if(cells.isEmpty()){
+        cells  = obj.getChildObjects().findAll { it.isDetection() && it.getROI() instanceof  PolygonROI}
+        detectionType = "Nucleus"
     }
-}
-QPEx.getQuPath().getProject().setPathClasses(availablePathClasses);
-
-// get cells
-def detectionType = "Cell"
-def cells  = obj.getChildObjects().findAll { it.isCell() }
-if(cells.isEmpty()){
-    cells  = obj.getChildObjects().findAll { it.isDetection() && it.getROI() instanceof  PolygonROI}
-    detectionType = "Nucleus"
-}
-
-// get all measurements
-def resultColumns = Results.getAllMeasurements(cells);
-def columnNames = resultColumns.getAllNames()
-
-// channel name extraction for processing
-def chList = getCurrentServer().getMetadata().getChannels().collect(e->e.getName())
-
-println "Classify cells..."
-cells.each{cell->
-    def abPositiveList = []
-
-    // check all grouped antibodies channel 
-    groupedAntibodies.each{ab->
-        def currentChannel = chList.stream().filter(e->e.toLowerCase().startsWith(ab.toLowerCase())).findAll()
-        if(!currentChannel.isEmpty()) {
-            currentChannel = currentChannel.get(0)
-            def metric = detectionType+": "+currentChannel+": Mean"
     
-            def abIntensity = resultColumns.getNumericValue(cell, metric)
-            if(abIntensity > antibodyThresholds.get(ab)){
-                abPositiveList.add(ab)
-                cell.measurements.put(ab, 1)
-            }else{
-                cell.measurements.put(ab, 0)
+    // get all measurements
+    def resultColumns = Results.getAllMeasurements(cells);
+    def columnNames = resultColumns.getAllNames()
+    
+    // channel name extraction for processing
+    def chList = getCurrentServer().getMetadata().getChannels().collect(e->e.getName())
+    
+    println "Classify cells..."
+    cells.each{cell->
+        def abPositiveList = []
+    
+        // check all grouped antibodies channel 
+        groupedAntibodies.each{ab->
+            def currentChannel = chList.stream().filter(e->e.toLowerCase().contains(ab.toLowerCase())).findAll()
+            if(!currentChannel.isEmpty()) {
+                currentChannel = currentChannel.get(0)
+                def metric = detectionType+": "+currentChannel+": Mean"
+        
+                def abIntensity = resultColumns.getNumericValue(cell, metric)
+                if(abIntensity > antibodyThresholds.get(ab)){
+                    abPositiveList.add(ab)
+                    cell.measurements.put(ab, 1)
+                }else{
+                    cell.measurements.put(ab, 0)
+                }
+            } else {
+                Logger.warn("The channel '" +ab+ "' is not present in the list of available channels.")
             }
-        } else {
-            Logger.warn("The channel '" +ab+ "' is not present in the list of available channels.")
         }
-    }
-
-    // classify cells according to positive grouped antibodies
-    def abPositive = abPositiveList.sort().join("")
-    def cellType = ""
-    if(abPositive.isEmpty()){
-       cell.setPathClass(PathClass.fromString(unclassifiedClass))
-    }else{
-        if( correspondanceMap.containsKey(abPositive) ) {
-             cell.setPathClass(PathClass.fromString(correspondanceMap.get(abPositive)))
+    
+        // classify cells according to positive grouped antibodies
+        def abPositive = abPositiveList.sort().join("")
+        def cellType = ""
+        if(abPositive.isEmpty()){
+           cell.setPathClass(PathClass.fromString(unclassifiedClass))
         }else{
-             cell.setPathClass(PathClass.fromString(undefinedClass))
-        }
-    }
-
-    
-    // check single antibodies channel 
-    singleAntibodies.each{ab->
-        def currentChannel = chList.stream().filter(e->e.toLowerCase().startsWith(ab.toLowerCase())).findAll()
-        if(!currentChannel.isEmpty()) {
-            currentChannel = currentChannel.get(0)
-            def metric = detectionType+": "+currentChannel+": Mean"
-    
-            def abIntensity = resultColumns.getNumericValue(cell, metric)
-            if(abIntensity > antibodyThresholds.get(ab)){
-                cell.measurements.put(ab, 1)
+            if( correspondanceMap.containsKey(abPositive) ) {
+                 cell.setPathClass(PathClass.fromString(correspondanceMap.get(abPositive)))
             }else{
-                cell.measurements.put(ab, 0)
+                 cell.setPathClass(PathClass.fromString(undefinedClass))
             }
-        } else {
-            Logger.warn("The channel '" +ab+ "' is not present in the list of available channels.")
+        }
+    
+        
+        // check single antibodies channel 
+        singleAntibodies.each{ab->
+            def currentChannel = chList.stream().filter(e->e.toLowerCase().contains(ab.toLowerCase())).findAll()
+            if(!currentChannel.isEmpty()) {
+                currentChannel = currentChannel.get(0)
+                def metric = detectionType+": "+currentChannel+": Mean"
+        
+                def abIntensity = resultColumns.getNumericValue(cell, metric)
+                if(abIntensity > antibodyThresholds.get(ab)){
+                    cell.measurements.put(ab, 1)
+                }else{
+                    cell.measurements.put(ab, 0)
+                }
+            } else {
+                Logger.warn("The channel '" +ab+ "' is not present in the list of available channels.")
+            }
         }
     }
 }
@@ -220,3 +211,4 @@ return
 import qupath.ext.biop.utils.Results
 import qupath.lib.objects.PathObject;
 import qupath.lib.gui.scripting.QPEx;
+import qupath.lib.roi.PolygonROI

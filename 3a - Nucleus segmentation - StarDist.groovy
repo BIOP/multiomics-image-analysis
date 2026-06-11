@@ -8,8 +8,7 @@
  * 3. Create the desired objects with the selected statistics
  * 
  * Please check the documentation and step-by-step tutorial on protocols.io
- * 
- * 
+ * https://go.epfl.ch/multiomics-image-analysis
  * 
  * 
  * NOTE: There are lots of options to customize the detection - this script shows some 
@@ -73,6 +72,9 @@ def originalChannelNames = originalServer.getMetadata().getChannels().collect(e-
 def realChannels = []
 realChannels.addAll(originalChannelNames.stream().filter(e->e.toLowerCase().contains(CHANNELS_TO_DETECT.toLowerCase())).findAll())
 
+// remove duplicate channels
+realChannels = realChannels.unique()
+
 // check if selected channels are found
 if(realChannels.isEmpty()) {
    Logger.warn("The channels you give cannot be retrieved in the list of available channels. Please check the channel names") 
@@ -80,7 +82,7 @@ if(realChannels.isEmpty()) {
    return
 }else {
    Logger.info("The following channels will be used for detection:")
-   Logger.info("Channels: "+ CHANNELS_TO_DETECT) 
+   Logger.info("Channels: "+ realChannels) 
 }
 
 // get tissue annotations
@@ -99,6 +101,7 @@ if (tissueAnnotations.isEmpty()) {
 }
 
 Date start = new Date()
+println "Starting Stardist..."
 
 // Customize how the StarDist detection should be applied
 // Here some reasonable default options are specified

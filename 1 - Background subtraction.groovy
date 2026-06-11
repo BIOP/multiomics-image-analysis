@@ -1,7 +1,8 @@
 /**
  * This script computes the background subtraction on each channel, as it is done in Horizon software.
- * Please check the documentation and step-by-step tutorial on protocols.io
  * 
+ * Please check the documentation and step-by-step tutorial on protocols.io
+ * https://go.epfl.ch/multiomics-image-analysis
  * 
  * 
  * author: Rémy Dornier - PTBIOP

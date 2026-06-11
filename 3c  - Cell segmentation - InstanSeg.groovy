@@ -8,6 +8,10 @@
  * Before running the script, please go under "Extensions > Deep Java Library > Manage DJL engines"
  * and click on PyTorch > check/download
  * 
+ * Please check the documentation and step-by-step tutorial on protocols.io
+ * https://go.epfl.ch/multiomics-image-analysis
+ * 
+ * 
  * NOTE: If the instenseg model is located on a server (i.e. \\sv-nas1.rcp....), you'll receive an error.
  * To get rid of this, save your project, close it, move it to your local computer et start it again.
  *  
@@ -46,13 +50,16 @@
 
 
 def DEVICE = "gpu" // change to cpu if no gpu available
-def MODEL_PATH = "C:/QuPath_Common_Data_0.7/models/instanseg_models/fluorescence_nuclei_and_cells-0.1.0"
+def MODEL_PATH = "C:/QuPath_Common_Data_0.7/models/intantseg_models/downloaded/fluorescence_nuclei_and_cells-0.1.0"
+
 
 def CHANNELS_TO_DETECT = [
     "DAPI",
-    "FITC", 
-    "Cy3", 
-    "Cy5", 
+    "CD3", 
+    "E-cad", 
+    "Pan CK", 
+    "CD4", 
+    "Ki67", 
 ]
 
 def TISSUE_CLASS = "tissue"
@@ -90,14 +97,28 @@ if (tissueAnnotations.isEmpty()) {
 
 // channel name extraction for processing
 def chList = getCurrentServer().getMetadata().getChannels().collect(e->e.getName())
-restrictedChList = []
+realChannels = []
 CHANNELS_TO_DETECT.each {
-   restrictedChList.addAll(chList.stream().filter(e->e.toLowerCase().contains(it.toLowerCase())).findAll())
+   realChannels.addAll(chList.stream().filter(e->e.toLowerCase().contains(it.toLowerCase())).findAll())
 }
+
+// remove duplicate channels
+realChannels = realChannels.unique()
+
+// check if selected channels are found
+if(realChannels.isEmpty()) {
+   Logger.warn("The channels you give cannot be retrieved in the list of available channels. Please check the channel names") 
+   Logger.warn("Channels: "+ CHANNELS_TO_DETECT) 
+   return
+}else {
+   Logger.info("The following channels will be used for detection:")
+   Logger.info("Channels: "+ realChannels) 
+}
+
 
 //Create the colorTransforms for instanseg.
 def instansegColorTransforms = []
-restrictedChList.each{
+realChannels.each{
     instansegColorTransforms.add(ColorTransforms.createChannelExtractor(it))
 }
 
@@ -105,7 +126,7 @@ restrictedChList.each{
 selectObjects(tissueAnnotations)
 
 // run instanseg
-println "Running instanseg on channels : " + restrictedChList
+println "Starting InstanSeg..."
 Date start = new Date()
 
 qupath.ext.instanseg.core.InstanSeg.builder()
