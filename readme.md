@@ -1,6 +1,6 @@
 
 
-Zenodo DOI: [![DOI](https://zenodo.org/badge/.svg)](https://doi.org/xxx)
+Zenodo DOI: [![DOI](https://zenodo.org/badge/1263026956.svg)](https://doi.org/10.5281/zenodo.20644883)
 
 
 # Multiomics image analysis
@@ -18,7 +18,7 @@ If you are using those scripts, please cite them by linking it to this GitHub or
 As this code is neither novel nor entirely original, there is no linked publication, but you can use the following Zenodo entry:
 
 
-[![DOI](https://zenodo.org/badge/.svg)](https://doi.org/xxx)
+[![DOI](https://zenodo.org/badge/1263026956.svg)](https://doi.org/10.5281/zenodo.20644883)
 
 
 ## Code authorship
