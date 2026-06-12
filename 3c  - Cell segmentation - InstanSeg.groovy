@@ -52,12 +52,10 @@
 def DEVICE = "gpu" // change to cpu if no gpu available
 def MODEL_PATH = "C:/QuPath_Common_Data_0.7/models/intantseg_models/downloaded/fluorescence_nuclei_and_cells-0.1.0"
 
-
+// no channel limit
 def CHANNELS_TO_DETECT = [
     "DAPI",
     "CD3", 
-    "E-cad", 
-    "Pan CK", 
     "CD4", 
     "Ki67", 
 ]

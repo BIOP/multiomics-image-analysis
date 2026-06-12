@@ -48,7 +48,8 @@
  * VARIABLES TO MODIFY
  ***********************/
 
-
+// up to 2 channels with cellpose <= 3.x.x
+// up to 3 channels with cellpose >= 4.x.x
 def CHANNELS_TO_DETECT = [
     "DAPI",
     "CD3", 

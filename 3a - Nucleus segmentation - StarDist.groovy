@@ -48,7 +48,7 @@
  * VARIABLES TO MODIFY
  ***********************/
 
-
+// only one channel
 def CHANNELS_TO_DETECT = "DAPI" 
 
 // You can find some at https://github.com/qupath/models

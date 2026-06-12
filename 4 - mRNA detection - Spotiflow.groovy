@@ -52,6 +52,7 @@
 // -> List of all pre-trained models : https://weigertlab.github.io/spotiflow/pretrained.html
 def PRETRAINED_MODEL = "general"
 
+// no channel limit
 def CHANNELS_TO_DETECT = [
     "T5",
     "T6",
