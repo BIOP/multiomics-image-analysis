@@ -44,7 +44,7 @@
  def CLASSIFIER_NAME = "tissue_classifier"
  def MIN_OBJECT_SIZE = 10000.0
  def MIN_HOLE_SIZE = 5000.0
- 
+ def TISSUE_CLASS = "tissue"
  
 /***********************
  * BEGINNING OF THE SCRIPT
@@ -52,5 +52,11 @@
  
 println "Starting pixel classification..."
 createAnnotationsFromPixelClassifier(CLASSIFIER_NAME, MIN_OBJECT_SIZE, MIN_HOLE_SIZE, "SPLIT")
+
+// set a unique name to the tissue annotations
+getAnnotationObjects().findAll{ it.getPathClass() == getPathClass(TISSUE_CLASS) }.each {
+   it.setName(String.valueOf(it.getID())) 
+}
+
 println "End of the script"
 return

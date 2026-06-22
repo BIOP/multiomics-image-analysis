@@ -106,7 +106,13 @@ if (tissueAnnotations.isEmpty()) {
     Logger.error("No parent objects are selected!")
     return
 }
-   
+
+// set a unique name to the tissue annotation if it's not already the case
+tissueAnnotations.each {
+    if(it.getName() == null || it.getName().isEmpty()) {
+        it.setName(String.valueOf(it.getID()))  
+    }
+}   
 
 Date start = new Date()
 println "Starting Spotiflow..."
@@ -128,7 +134,7 @@ def spotiflow = Spotiflow.builder()
         .saveTempImagesAsOmeZarr()                           // OPTIONAL : ONLY AVAILABLE FOR SPOTIFLOW >= 0.5.8. Save temp images as ome-zarr instead of ome.tiff
 //        .clearAllChildObjects()                              // OPTIONAL : Clear all previous detections, whatever their class
 //        .createAnnotations()                                 // OPTIONAL : Create annotations instead of detections. WARNING: this can slow up a lot QuPath. Only to use to pre-annotated small patches for later training.
-     //   .clearChildObjectsBelongingToCurrentChannels()       // OPTIONAL : Clear all previous detections which belong to the current selected channels (i.e. with their class set with the name of the channel)
+        .clearChildObjectsBelongingToCurrentChannels()       // OPTIONAL : Clear all previous detections which belong to the current selected channels (i.e. with their class set with the name of the channel)
         .channels(realChannels as String[])        // REQUIRED : list of channel name(s) to process. At least one channel is required
         .cleanTempDir()                                      // OPTIONAL : Clean all files from the tempDirectory
 //        .addParameter("key","value")                         // OPTIONAL : Add more parameter, base on the available ones

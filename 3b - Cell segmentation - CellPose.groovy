@@ -107,6 +107,13 @@ if (tissueAnnotations.isEmpty()) {
     return
 }
 
+// set a unique name to the tissue annotation if it's not already the case
+tissueAnnotations.each {
+    if(it.getName() == null || it.getName().isEmpty()) {
+        it.setName(String.valueOf(it.getID()))  
+    }
+}
+
 Date start = new Date()
 println "Starting CellPose..."
 
