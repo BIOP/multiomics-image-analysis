@@ -10,6 +10,13 @@ This repository hosted the scripts described and used in the [Open Source Multio
 
 Please follow the instructions given in this protocol, and in the scripts header, before using them.
 
+# Code version
+
+Latest version of the scripts is available under the [main branch](https://github.com/BIOP/multiomics-image-analysis/tree/main). 
+The latest versions implement new developments and bug fix, but are not yet released. Thus, the scripts might change a bit before they are effectively released with a new version number.
+
+Stable versions of the scripts are available under the release section. Please find below shortcuts to access a specific version of the scripts
+- [0.1.1](https://github.com/BIOP/multiomics-image-analysis/tree/v0.1.1)
 
 # Citing
 
