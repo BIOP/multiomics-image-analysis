@@ -50,6 +50,8 @@
  ***********************/
 
 
+// the class applied to annotations that you plan to analyze
+// this class should be the same, case-sensitive, as the one selected in your pixel classifier
 def TISSUE_CLASS = "tissue"
 
 

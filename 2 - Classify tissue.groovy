@@ -41,14 +41,18 @@
  ***********************/
  
  
+ // Default values => Might not be suitable for your application
+ // If necessary, modify them to fit your needs
  def CLASSIFIER_NAME = "tissue_classifier"
  def MIN_OBJECT_SIZE = 10000.0
  def MIN_HOLE_SIZE = 5000.0
  def TISSUE_CLASS = "tissue"
  
+ 
 /***********************
  * BEGINNING OF THE SCRIPT
  ***********************/
+ 
  
 println "Starting pixel classification..."
 createAnnotationsFromPixelClassifier(CLASSIFIER_NAME, MIN_OBJECT_SIZE, MIN_HOLE_SIZE, "SPLIT")

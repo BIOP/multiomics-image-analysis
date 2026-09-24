@@ -52,6 +52,8 @@
  *********************/
  
  
+// give the exact name of the channel, case-sensitive, as it appears in QuPath
+// and, for each of them, the intensity threshold 
 def antibodyThresholds = [:]
 antibodyThresholds["CD45"] = 300
 antibodyThresholds["CD3"] = 200
@@ -68,15 +70,6 @@ antibodyThresholds["PD-1"] = 400
 antibodyThresholds["Ki-67"] = 300
 antibodyThresholds["Cytokeratin"] = 1000
 
-
-def TISSUE_CLASS = "tissue"
-
-
-/***********************
- * BEGINNING OF THE SCRIPT
- ***********************/
- 
-  
 def singleAntibodies = [
     "αSMA",
     "PD-L1",
@@ -111,6 +104,16 @@ correspondanceMap["CD11cCD45"] = "Dendritic cell"
 correspondanceMap["CD20CD45"] = "B cell"
 correspondanceMap["CD45CD56"] = "NK cell"
 correspondanceMap["CD45CD68"] = "Macrophage"
+
+// the class applied to annotations that you plan to analyze
+// this class should be the same, case-sensitive, as the one selected in your pixel classifier
+def TISSUE_CLASS = "tissue"
+
+
+/***********************
+ * BEGINNING OF THE SCRIPT
+ ***********************/
+
 
 def undefinedClass = "Undefined cell"
 def unclassifiedClass = "Unclassified cell"

@@ -49,12 +49,15 @@
  ***********************/
 
 // only one channel
+// give the exact name of the channel, case-sensitive, as it appears in QuPath
 def CHANNELS_TO_DETECT = "DAPI" 
 
 // You can find some at https://github.com/qupath/models
 // (Check credit & reuse info before downloading)
 def MODEL_PATH = "C:/QuPath_Common_Data_0.7/models/stardist_models/dsb2018_heavy_augment.pb"
 
+// the class applied to annotations that you plan to analyze
+// this class should be the same, case-sensitive, as the one selected in your pixel classifier
 def TISSUE_CLASS = "tissue"
 
 

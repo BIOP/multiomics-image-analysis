@@ -47,18 +47,30 @@
  * VARIABLES TO MODIFY
  ***********************/
 
+
 // If you have trained a custom model, specify the model directory as a File in setModelDir()
-// If you want to use any other pre-trained models, specify its name in setPretrainedModelName()
 // -> List of all pre-trained models : https://weigertlab.github.io/spotiflow/pretrained.html
 def PRETRAINED_MODEL = "general"
 
+// Minimum distance between spots for NMS
+def MIN_DISTANCE = 1
+
+// Probability threshold for peak detection. 
+// Value between 0 and 1. If null, will load the optimal one. 
+def PROBABILITY_THRESHOLD = null
+
+
 // no channel limit
+// give the exact name of the channel, case-sensitive, as it appears in QuPath
 def CHANNELS_TO_DETECT = [
     "T5",
     "T6",
     "T7",
 ]
 
+
+// the class applied to annotations that you plan to analyze
+// this class should be the same, case-sensitive, as the one selected in your pixel classifier
 def TISSUE_CLASS = "tissue"
 
 
@@ -120,9 +132,9 @@ println "Starting Spotiflow..."
 def spotiflow = Spotiflow.builder()
 //        .tempDirectory(new File("path/to/tmp/folder"))       // OPTIONAL : default is in 'qpProject/spotiflow-temp' folder
 //        .setModelDir(new File("path/to/my/model"))           // OPTIONAL : path to your own trained model
-        .setPretrainedModelName(PRETRAINED_MODEL)                 // OPTIONAL : Default is 'general'
-//        .setMinDistance(2)                                   // OPTIONAL : Positive integer value
-        .setProbabilityThreshold(0.6)                        // OPTIONAL : Positive value
+        .setPretrainedModelName(PRETRAINED_MODEL)            // OPTIONAL : Default is 'general'
+        .setMinDistance(MIN_DISTANCE)                        // OPTIONAL : Positive integer value
+        PROBABILITY_THRESHOLD == null ?: .setProbabilityThreshold(PROBABILITY_THRESHOLD)      // OPTIONAL : Positive value
 //        .disableGPU()                                        // OPTIONAL : Force using CPU ; default is automatic (let spotiflow decide)
 //        .process3d()                                         // OPTIONAL : process the entire zstack
 //        .zPositions(0,5)                                     // OPTIONAL : ONLY works wih process3d(). Select a sub-stack (start and end inclusive)
@@ -131,11 +143,11 @@ def spotiflow = Spotiflow.builder()
         .setClassChannelName()                               // OPTIONAL : create a new class for each channel and assign detection to it. Default: not assign any classes
 //        .nThreads(12)                                        // OPTIONAL : How much you want to paralellize processing. Default 12
 //        .saveBuilder("MyFancyName")                          // OPTIONAL : To save builder parameters as JSON file
-        .saveTempImagesAsOmeZarr()                           // OPTIONAL : ONLY AVAILABLE FOR SPOTIFLOW >= 0.5.8. Save temp images as ome-zarr instead of ome.tiff
+//        .saveTempImagesAsOmeZarr()                           // OPTIONAL : ONLY AVAILABLE FOR SPOTIFLOW >= 0.5.8. Save temp images as ome-zarr instead of ome.tiff
 //        .clearAllChildObjects()                              // OPTIONAL : Clear all previous detections, whatever their class
 //        .createAnnotations()                                 // OPTIONAL : Create annotations instead of detections. WARNING: this can slow up a lot QuPath. Only to use to pre-annotated small patches for later training.
         .clearChildObjectsBelongingToCurrentChannels()       // OPTIONAL : Clear all previous detections which belong to the current selected channels (i.e. with their class set with the name of the channel)
-        .channels(realChannels as String[])        // REQUIRED : list of channel name(s) to process. At least one channel is required
+        .channels(realChannels as String[])                  // REQUIRED : list of channel name(s) to process. At least one channel is required
         .cleanTempDir()                                      // OPTIONAL : Clean all files from the tempDirectory
 //        .addParameter("key","value")                         // OPTIONAL : Add more parameter, base on the available ones
         .build()
