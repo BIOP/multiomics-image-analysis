@@ -129,12 +129,11 @@ tissueAnnotations.each {
 Date start = new Date()
 println "Starting Spotiflow..."
 
-def spotiflow = Spotiflow.builder()
+def spotiflowBuilder = Spotiflow.builder()
 //        .tempDirectory(new File("path/to/tmp/folder"))       // OPTIONAL : default is in 'qpProject/spotiflow-temp' folder
 //        .setModelDir(new File("path/to/my/model"))           // OPTIONAL : path to your own trained model
         .setPretrainedModelName(PRETRAINED_MODEL)            // OPTIONAL : Default is 'general'
         .setMinDistance(MIN_DISTANCE)                        // OPTIONAL : Positive integer value
-        PROBABILITY_THRESHOLD == null ?: .setProbabilityThreshold(PROBABILITY_THRESHOLD)      // OPTIONAL : Positive value
 //        .disableGPU()                                        // OPTIONAL : Force using CPU ; default is automatic (let spotiflow decide)
 //        .process3d()                                         // OPTIONAL : process the entire zstack
 //        .zPositions(0,5)                                     // OPTIONAL : ONLY works wih process3d(). Select a sub-stack (start and end inclusive)
@@ -150,8 +149,12 @@ def spotiflow = Spotiflow.builder()
         .channels(realChannels as String[])                  // REQUIRED : list of channel name(s) to process. At least one channel is required
         .cleanTempDir()                                      // OPTIONAL : Clean all files from the tempDirectory
 //        .addParameter("key","value")                         // OPTIONAL : Add more parameter, base on the available ones
-        .build()
+        
+if(PROBABILITY_THRESHOLD != null){      
+    spotiflowBuilder.setProbabilityThreshold(PROBABILITY_THRESHOLD) // OPTIONAL : Positive value)
+}
 
+def spotiflow = spotiflowBuilder.build()
 
 // print the available arguments for prediction
 //spotiflow.helpPredict()
