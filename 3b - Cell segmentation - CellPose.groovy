@@ -48,8 +48,10 @@
  * VARIABLES TO MODIFY
  ***********************/
 
+
 // up to 2 channels with cellpose <= 3.x.x
 // up to 3 channels with cellpose >= 4.x.x
+// give the exact name of the channel, case-sensitive, as it appears in QuPath
 def CHANNELS_TO_DETECT = [
     "DAPI",
     "CD3", 
@@ -60,6 +62,8 @@ def CHANNELS_TO_DETECT = [
 // Other models for Cellpose https://cellpose.readthedocs.io/en/latest/models.html
 def MODEL_PATH = "cpsam"
 
+// the class applied to annotations that you plan to analyze
+// this class should be the same, case-sensitive, as the one selected in your pixel classifier
 def TISSUE_CLASS = "tissue"
 
 

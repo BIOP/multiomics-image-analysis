@@ -48,11 +48,14 @@
  * VARIABLES TO MODIFY
  *********************/
 
+// change to cpu if no gpu available
+def DEVICE = "gpu" 
 
-def DEVICE = "gpu" // change to cpu if no gpu available
+// Specify the path of the unzipped instanseg model
 def MODEL_PATH = "C:/QuPath_Common_Data_0.7/models/intantseg_models/downloaded/fluorescence_nuclei_and_cells-0.1.0"
 
 // no channel limit
+// give the exact name of the channel, case-sensitive, as it appears in QuPath
 def CHANNELS_TO_DETECT = [
     "DAPI",
     "CD3", 
@@ -60,7 +63,10 @@ def CHANNELS_TO_DETECT = [
     "Ki67", 
 ]
 
+// the class applied to annotations that you plan to analyze
+// this class should be the same, case-sensitive, as the one selected in your pixel classifier
 def TISSUE_CLASS = "tissue"
+
 
 /***********************
  * BEGINNING OF THE SCRIPT
