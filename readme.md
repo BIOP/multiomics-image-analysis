@@ -17,6 +17,7 @@ The latest versions implement new developments and bug fix, but are not yet rele
 
 Stable versions of the scripts are available under the release section. Please find below shortcuts to access a specific version of the scripts
 - [0.1.1](https://github.com/BIOP/multiomics-image-analysis/tree/v0.1.1)
+- [1.0.0](https://github.com/BIOP/multiomics-image-analysis/tree/v1.0.0)
 
 # Citing
 
