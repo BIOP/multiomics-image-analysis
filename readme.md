@@ -42,5 +42,5 @@ As this code is neither novel nor entirely original, there is no linked publicat
 ### If you use those scripts, you should cite the following protocol:
 
 Dornier, R., Schlaeppi, A., Sordet-Dessimoz, J., Seitz, A., **Open Source Multiomics Analysis Workflow for Comet Images**. 
-protocols.io, 2026.06, https://go.epfl.ch/multiomics-image-analysis
+protocols.io, 2026.06, [https://dx.doi.org/10.17504/protocols.io.j8nlkzy86l5r/v1](https://dx.doi.org/10.17504/protocols.io.j8nlkzy86l5r/v1)
 
