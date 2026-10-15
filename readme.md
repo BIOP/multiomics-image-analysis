@@ -17,6 +17,7 @@ The latest versions implement new developments and bug fix, but are not yet rele
 
 Stable versions of the scripts are available under the release section. Please find below shortcuts to access a specific version of the scripts
 - [0.1.1](https://github.com/BIOP/multiomics-image-analysis/tree/v0.1.1)
+- [1.0.0](https://github.com/BIOP/multiomics-image-analysis/tree/v1.0.0)
 
 # Citing
 
@@ -41,5 +42,5 @@ As this code is neither novel nor entirely original, there is no linked publicat
 ### If you use those scripts, you should cite the following protocol:
 
 Dornier, R., Schlaeppi, A., Sordet-Dessimoz, J., Seitz, A., **Open Source Multiomics Analysis Workflow for Comet Images**. 
-protocols.io, 2026.06, https://go.epfl.ch/multiomics-image-analysis
+protocols.io, 2026.06, [https://dx.doi.org/10.17504/protocols.io.j8nlkzy86l5r/v1](https://dx.doi.org/10.17504/protocols.io.j8nlkzy86l5r/v1)
 
