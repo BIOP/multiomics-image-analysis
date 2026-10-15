@@ -7,7 +7,7 @@
  * 
  * author: Rémy Dornier - PTBIOP
  * date: 2025-10-01
- * version: 1.2.0
+ * version: 1.2.1
  * 
  * Last tested on QuPath 0.7.x
  * 
@@ -32,6 +32,10 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * -----------------------------------------------------------------------------
+ * 
+ * History
+ * - 2026.10.15: Fix #2 - Rename uniquely channels of the raw image before doing the background subtraction -v1.2.1
+ * 
  */
 
 
@@ -56,6 +60,10 @@ Date start = new Date()
 // Set the ImageServer of the original image
 def originalServer = getCurrentServer()
 def originalImageData = getCurrentImageData()
+
+// make channel names unique on the original image (necessary to be sure which channel to take for the subtraction)
+// QuPath does the linear combination with channel names, not indices.
+checkChannelNameAndMakeThemUnique(originalServer, originalImageData)
 
 // extracting the exposure time of each channel
 def exposureTimeMap
@@ -243,6 +251,27 @@ return
  * METHODS
  ***********************/
  
+
+def checkChannelNameAndMakeThemUnique(server, imageData) {
+   def renamedChannels = []
+   for (int c = 0; c < server.nChannels(); c++) {
+        def currentName = server.getChannel(c).getName()
+        
+        if(renamedChannels.contains(currentName)) {
+            def updatedName
+            def idx = 1
+            do {
+                updatedName = currentName + "_"+(idx++)
+            }while(renamedChannels.contains(updatedName))
+            
+            renamedChannels.add(updatedName)  
+        } else {
+         renamedChannels.add(currentName)   
+        }
+    }
+    QP.setChannelNames(imageData, renamedChannels.toArray(new String[0]));
+}
+
 
 def gettingExposureTimesPerChannel(server) {
     def exposureTimeMap = new HashMap<>()
