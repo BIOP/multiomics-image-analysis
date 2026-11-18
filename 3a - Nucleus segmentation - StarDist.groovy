@@ -16,7 +16,7 @@
  * 
  * author: Rémy Dornier - PTBIOP
  * date: 2026-06.08
- * version: 1.0.0
+ * version: 1.3.0
  * 
  * Last tested on QuPath 0.7.x
  * 

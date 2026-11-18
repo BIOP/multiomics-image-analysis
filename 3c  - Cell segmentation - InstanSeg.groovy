@@ -17,8 +17,7 @@
  *  
  * author: Rémy Dornier - PTBIOP
  * date: 2026-01-19
- * version: 1.0.0
- * 
+ * version: 1.3.0
  * 
  * -----------------------------------------------------------------------------
  * Copyright (c) 2026 ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, BioImaging And Optics Platform (BIOP)
